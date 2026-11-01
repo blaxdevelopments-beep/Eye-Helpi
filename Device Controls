@@ -1,0 +1,368 @@
+#
+#  tools/device_controls.py
+#  Device-control tools for Eye~Helpi — cross-OS by design: the same agent
+#  runs natively on macOS, Linux and Windows, and every tool picks the right
+#  platform machinery (or explains what's missing) instead of hard-failing.
+#
+#  Per-OS support matrix:
+#    battery      : macOS(pmset)  Linux(/sys power_supply)  Windows(PowerShell CIM)
+#    screen shot  : macOS(screencapture)  Linux(gnome-screenshot/scrot/import)
+#                   Windows(PowerShell System.Drawing)
+#    camera frame : imagesnap(macOS) or ffmpeg on all three (per-OS device args)
+#    recording    : ffmpeg on all three (avfoundation / x11grab / gdigrab)
+#    reminders &
+#    calendar     : macOS(osascript); Linux/Windows report gracefully for now
+#    media encode,
+#    disposal     : pure stdlib — identical on every OS
+#
+#  The public function names are stable across platforms so the tool registry
+#  never changes.
+#
+
+import base64
+import json
+import os
+import shlex
+import subprocess
+import time
+from datetime import datetime
+
+from config import RECORDING_DIR, RECORDING_MAX_AGE_SECONDS
+from .platform import OS_NAME, run_binary
+
+STATE_DIR = os.path.join(os.path.expanduser("~"), ".eyehelpi")
+RECORDING_DIR = os.path.expanduser(RECORDING_DIR)
+RECORDING_PID_FILE = os.path.join(STATE_DIR, "recording.pid")
+PENDING_DISPOSALS_FILE = os.path.join(STATE_DIR, "pending_disposals.json")
+
+RECORDING_SECONDS = 3600
+
+
+def _run(command, timeout=30):
+    """Runs a command (string form), returning (ok, output)."""
+    try:
+        proc = subprocess.run(
+            shlex.split(command), capture_output=True, text=True, timeout=timeout
+        )
+        return proc.returncode == 0, (proc.stdout or proc.stderr or "").strip()
+    except FileNotFoundError:
+        return False, f"{command.split()[0]} is not available on this machine"
+    except Exception as exc:
+        return False, str(exc)
+
+
+def _run_list(args, timeout=30):
+    """Runs a command as an argument list (safer for PowerShell/ffmpeg)."""
+    try:
+        proc = subprocess.run(
+            args, capture_output=True, text=True, timeout=timeout
+        )
+        return proc.returncode == 0, (proc.stdout or proc.stderr or "").strip()
+    except FileNotFoundError:
+        return False, f"{args[0]} is not available on this machine"
+    except Exception as exc:
+        return False, str(exc)
+
+
+def _b64_file(path):
+    with open(path, "rb") as handle:
+        return base64.b64encode(handle.read()).decode()
+
+
+def _windows_powershell(script, timeout=60):
+    return _run_list(["powershell", "-NoProfile", "-Command", script], timeout=timeout)
+
+
+# ---------------------------------------------------------------- battery
+
+def _battery_darwin():
+    ok, output = _run("pmset -g ps")
+    if not ok:
+        return {"error": output}
+    percent, charging = None, False
+    for token in output.replace("\n", " ").split():
+        if token.endswith("%"):
+            percent = int(token.rstrip("%"))
+    charging = "AC Power" in output
+    return {"percent": percent, "charging": charging}
+
+
+def _battery_linux():
+    base = "/sys/class/power_supply"
+    bat = None
+    try:
+        for name in sorted(os.listdir(base)):
+            if name.startswith("BAT"):
+                bat = os.path.join(base, name)
+                break
+    except OSError:
+        pass
+    if bat is None:
+        return {"error": "no battery found (a desktop without one is fine)"}
+    try:
+        with open(os.path.join(bat, "capacity")) as handle:
+            percent = int(handle.read().strip())
+        with open(os.path.join(bat, "status")) as handle:
+            status = handle.read().strip().lower()
+        return {"percent": percent, "charging": status in ("charging", "full")}
+    except OSError as exc:
+        return {"error": f"battery read failed: {exc}"}
+
+
+def _battery_windows():
+    ok, output = _windows_powershell(
+        "Get-CimInstance Win32_Battery | "
+        "Select-Object EstimatedChargeRemaining, BatteryStatus | ConvertTo-Json"
+    )
+    if not ok or not output:
+        return {"error": output or "no battery found (a desktop without one is fine)"}
+    try:
+        data = json.loads(output)
+        if isinstance(data, list):
+            data = data[0]
+        percent = data.get("EstimatedChargeRemaining")
+        status = data.get("BatteryStatus")
+        # 2 = on AC, charging; anything else running on battery
+        charging = status in (2, 6, 7, 8, 9, 11, 12)
+        return {"percent": int(percent) if percent is not None else None, "charging": charging}
+    except Exception as exc:
+        return {"error": f"battery parse failed: {exc}"}
+
+
+def get_battery():
+    if OS_NAME == "darwin":
+        return _battery_darwin()
+    if OS_NAME == "linux":
+        return _battery_linux()
+    if OS_NAME == "windows":
+        return _battery_windows()
+    return {"error": f"battery not supported on {OS_NAME} yet"}
+
+
+# ------------------------------------------------------------ screen shot
+
+_SCREENSHOT_LINUX_FALLBACKS = [
+    "gnome-screenshot -f {path}",
+    "scrot -o {path}",
+    "import -window root {path}",
+]
+
+
+def capture_screen():
+    path = os.path.join("/tmp" if OS_NAME != "windows" else os.environ.get("TEMP", "C:\\Temp"),
+                        "eyehelpi_screen.png")
+    if OS_NAME == "darwin":
+        ok, output = _run(f"screencapture -x {shlex.quote(path)}")
+        if ok:
+            return {"format": "png", "base64": _b64_file(path)}
+        return {"error": f"screen capture failed: {output}"}
+
+    if OS_NAME == "linux":
+        for template in _SCREENSHOT_LINUX_FALLBACKS:
+            if not run_binary(template.split()[0]):
+                continue
+            ok, output = _run(template.format(path=shlex.quote(path)))
+            if ok and os.path.exists(path):
+                return {"format": "png", "base64": _b64_file(path)}
+        return {"error": "no screenshot tool found - install gnome-screenshot, scrot or ImageMagick"}
+
+    if OS_NAME == "windows":
+        script = (
+            "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; "
+            "$b = [System.Windows.Forms.SystemInformation]::VirtualScreen; "
+            "$bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height; "
+            "$g = [System.Drawing.Graphics]::FromImage($bmp); "
+            "$g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size); "
+            "$bmp.Save('" + path.replace("\\", "\\\\") + "');"
+        )
+        ok, output = _windows_powershell(script)
+        if ok and os.path.exists(path):
+            return {"format": "png", "base64": _b64_file(path)}
+        return {"error": f"screen capture failed: {output}"}
+
+    return {"error": f"screen capture not supported on {OS_NAME} yet"}
+
+
+# ----------------------------------------------------------- camera frame
+
+def _ffmpeg_camera_device_args():
+    """Per-OS ffmpeg input args for the default camera."""
+    if OS_NAME == "darwin":
+        return ["-f", "avfoundation", "-i", "0"]
+    if OS_NAME == "linux":
+        return ["-f", "video4linux2", "-i", "/dev/video0"]
+    if OS_NAME == "windows":
+        return ["-f", "dshow", "-i", "video=Screen-Capture-Recorder"]
+    return []
+
+
+def _ffmpeg_list_windows_cameras():
+    """Returns dshow device names for cameras on Windows (best effort)."""
+    ok, output = _run_list(
+        ["ffmpeg", "-hide_banner", "-list_devices", "true",
+         "-f", "dshow", "-i", "dummy"],
+        timeout=20
+    )
+    if not ok and not output:
+        return []
+    names = []
+    for line in output.splitlines():
+        line = line.strip().strip('"')
+        if '"video' in line or ' DirectShow video devices' in line:
+            continue
+        if line.startswith('"') and line.endswith('"'):
+            name = line.strip('"')
+            if name and "audio" not in name.lower():
+                names.append(name)
+    return names
+
+
+def capture_camera_frame():
+    path = "/tmp/eyehelpi_frame.jpg" if OS_NAME != "windows" else os.path.join(
+        os.environ.get("TEMP", "C:\\Temp"), "eyehelpi_frame.jpg"
+    )
+
+    if OS_NAME == "darwin" and run_binary("imagesnap"):
+        ok, output = _run(f"imagesnap -w 1 {shlex.quote(path)}")
+        if ok and os.path.exists(path):
+            return {"format": "jpeg", "base64": _b64_file(path)}
+
+    if not run_binary("ffmpeg"):
+        return {"error": "ffmpeg is required for camera capture on this OS - install it and retry"}
+
+    device_args = _ffmpeg_camera_device_args()
+    if OS_NAME == "windows":
+        cameras = _ffmpeg_list_windows_cameras()
+        if not cameras:
+            return {"error": "no camera found via DirectShow - is a webcam connected?"}
+        device_args = ["-f", "dshow", "-i", f"video={cameras[0]}"]
+
+    cmd = ["ffmpeg", "-y", *device_args, "-frames:v", "1", path]
+    ok, output = _run_list(cmd, timeout=30)
+    if ok and os.path.exists(path):
+        return {"format": "jpeg", "base64": _b64_file(path)}
+    return {"error": f"camera capture failed: {output}"}
+
+
+# ------------------------------------------------------- media + recordings
+
+def media_to_base64(path):
+    expanded = os.path.expanduser(str(path))
+    if not os.path.isfile(expanded):
+        return {"error": f"no such file: {expanded}"}
+    if os.path.getsize(expanded) > 20 * 1024 * 1024:
+        return {"error": "file is larger than 20 MB"}
+    ext = os.path.splitext(expanded)[1].lstrip(".").lower() or "bin"
+    return {"format": ext, "base64": _b64_file(expanded)}
+
+
+def _ffmpeg_record_device_args():
+    """Per-OS ffmpeg input args for full-screen recording."""
+    if OS_NAME == "darwin":
+        return ["-f", "avfoundation", "-i", "1:0"]
+    if OS_NAME == "linux":
+        return ["-f", "x11grab", "-framerate", "30", "-i", ":0.0"]
+    if OS_NAME == "windows":
+        return ["-f", "gdigrab", "-framerate", "30", "-i", "desktop"]
+    return []
+
+
+def start_recording():
+    if os.path.exists(RECORDING_PID_FILE):
+        return {"error": "a recording is already running - call stop_recording first"}
+    if not run_binary("ffmpeg"):
+        return {"error": "ffmpeg is required for recording on this OS - install it and retry"}
+    os.makedirs(RECORDING_DIR, exist_ok=True)
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    target = os.path.join(RECORDING_DIR, f"recording_{stamp}.mp4")
+    cmd = ["ffmpeg", "-y", *_ffmpeg_record_device_args(), "-t", str(RECORDING_SECONDS), target]
+    try:
+        proc = subprocess.Popen(
+            cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
+    except FileNotFoundError:
+        return {"error": "ffmpeg disappeared - install it and retry"}
+    with open(RECORDING_PID_FILE, "w") as handle:
+        handle.write(f"{proc.pid}\n{target}")
+    return {"started": True, "target": target, "os": OS_NAME}
+
+
+def stop_recording():
+    if not os.path.exists(RECORDING_PID_FILE):
+        return {"error": "no recording is running"}
+    with open(RECORDING_PID_FILE) as handle:
+        pid, target = handle.read().strip().split("\n")[:2]
+    if OS_NAME == "windows":
+        subprocess.run(["taskkill", "/PID", pid, "/F"], capture_output=True)
+    else:
+        subprocess.run(["kill", "-INT", pid], capture_output=True)
+    time.sleep(1.0)
+    os.remove(RECORDING_PID_FILE)
+    return {"stopped": True, "saved_to": target}
+
+
+# ------------------------------------------------- disposal (cross-OS core)
+
+def _load_pending():
+    if not os.path.exists(PENDING_DISPOSALS_FILE):
+        return {}
+    with open(PENDING_DISPOSALS_FILE) as handle:
+        try:
+            return json.load(handle)
+        except Exception:
+            return {}
+
+
+def _save_pending(pending):
+    os.makedirs(STATE_DIR, exist_ok=True)
+    with open(PENDING_DISPOSALS_FILE, "w") as handle:
+        json.dump(pending, handle, indent=2)
+
+
+def take_pending_disposals():
+    os.makedirs(RECORDING_DIR, exist_ok=True)
+    now = time.time()
+    pending = _load_pending()
+    candidates = []
+    for name in os.listdir(RECORDING_DIR):
+        path = os.path.join(RECORDING_DIR, name)
+        age = now - os.path.getmtime(path)
+        if age >= RECORDING_MAX_AGE_SECONDS and name not in pending.get("approved", []):
+            candidates.append(
+                {
+                    "name": name,
+                    "age_hours": round(age / 3600, 1),
+                    "size_mb": round(os.path.getsize(path) / (1024 * 1024), 1),
+                }
+            )
+    pending["candidates"] = candidates
+    _save_pending(pending)
+    return {
+        "message": "Ask the user to approve or reject each of these before deletion.",
+        "pending": candidates,
+    }
+
+
+def approve_disposal(names):
+    pending = _load_pending()
+    candidate_names = [c["name"] for c in pending.get("candidates", [])]
+    deleted, kept = [], []
+    for name in names or []:
+        path = os.path.join(RECORDING_DIR, os.path.basename(name))
+        if name in candidate_names and os.path.exists(path):
+            os.remove(path)
+            deleted.append(name)
+        else:
+            kept.append(name)
+    pending["candidates"] = [c for c in pending.get("candidates", []) if c["name"] not in deleted]
+    _save_pending(pending)
+    return {"deleted": deleted, "not_found_or_unapproved": kept}
+
+
+def reject_disposal(names):
+    pending = _load_pending()
+    rejected = [n for n in (names or []) if n in [c["name"] for c in pending.get("candidates", [])]]
+    pending["candidates"] = [c for c in pending.get("candidates", []) if c["name"] not in rejected]
+    pending.setdefault("approved", []).extend(rejected)
+    _save_pending(pending)
+    return {"kept": rejected, "note": "these recordings were kept"}
