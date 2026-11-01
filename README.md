@@ -1,2 +1,50 @@
 # Eye-Helpi
 Eye~Helpi' is a real time visual virtual artificial intelligence agent that is capable of holding real human like conversation.
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eye~Helpi widget preview - Blax Developments</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0a0f16;
+        color: #e6edf3;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      .card {
+        max-width: 560px;
+        text-align: center;
+        padding: 32px;
+        border: 1px solid rgba(33, 211, 238, 0.25);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 0 30px rgba(33, 211, 238, 0.08);
+      }
+      h1 { font-size: 20px; letter-spacing: 2px; margin: 0 0 8px; }
+      p { color: #8b949e; line-height: 1.5; }
+      code { color: #21d3ee; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>EYE~HELPI WIDGET PREVIEW</h1>
+      <p>
+        This page stands in for www.blaxdevelopment.com. The cyan eye bubble in the
+        corner is the widget - tap it and chat. The real integration is the same
+        two script tags on your live site.
+      </p>
+      <p>Make sure the agent is serving on your computer first: <code>python main.py serve</code></p>
+    </div>
+
+    <script>
+      // Point this at the machine running the Eye~Helpi agent.
+      window.EYEHELPI_CONFIG = { brainUrl: "http://localhost:8765" };
+    </script>
+    <script src="eyehelpi-widget.js" defer></script>
+  </body>
+</html>
