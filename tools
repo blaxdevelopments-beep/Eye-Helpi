@@ -1,0 +1,50 @@
+# Eye~Helpi Desktop Agent
+
+The machine-side half of Eye~Helpi: a local Ollama brain with an **agentic
+tool-calling loop** and a tool registry the phone, the CLI and any MCP client
+can all drive.
+
+## Runs on macOS, Linux and Windows
+
+The agent detects the OS automatically and picks the right machinery per tool:
+- **Battery**: pmset (Mac) / `/sys/class/power_supply` (Linux) / PowerShell CIM (Windows)
+- **Screen capture**: screencapture (Mac) / gnome-screenshot, scrot or ImageMagick (Linux) / PowerShell System.Drawing (Windows)
+- **Camera & recording**: ffmpeg on all three (avfoundation / video4linux2+x11grab / dshow+gdigrab)
+- **Reminders & Calendar**: macOS today; other OSes report gracefully
+- **Weather, network diagnostics, file search, disposal**: pure stdlib — identical everywhere
+
+Install Ollama on the host machine (any OS), then:
+
+```bash
+pip install -r requirements.txt        # standard library only, nothing to install
+ollama pull llama3.2-vision            # the vision brain
+python main.py chat                    # interactive chat with tool calling
+python main.py serve --port 8765       # HTTP API for the phone / scripts
+```
+
+## Quick start
+
+## What's inside
+
+- `main.py` - chat REPL + HTTP API. The chat loop asks the model, executes any
+  tool calls it requests, feeds results back, up to 6 rounds per question.
+- `tools/__init__.py` - the tool registry: name -> function + description +
+  JSON schema, in Ollama tool format.
+- `tools/device_controls.py` - macOS device control: battery, screen capture,
+  webcam frame, media encoding, background recordings with user-approved
+  disposal of anything older than an hour.
+- `tools/productivity_tools.py` - Reminders, Calendar, weather (wttr.in),
+  network diagnostics, file search.
+- `tools/mcp_server.py` - Model Context Protocol server over stdio, exposing
+  every registered tool to any MCP client:
+
+  ```json
+  {"command": "python", "args": ["-m", "tools.mcp_server"], "cwd": "<agent folder>"}
+  ```
+
+## Phone setup
+
+In the iOS app's Setup tab, point the agent host at this Mac's LAN address
+(e.g. `http://192.168.1.20:11434`). The phone talks to Ollama directly for
+streaming chat; `python main.py serve` exposes the tool API when you want the
+phone to trigger desktop device control.
