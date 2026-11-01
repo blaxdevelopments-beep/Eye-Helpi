@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_comment</key>
+	<string>FinTech-grade pinning for Eye~Helpi. Copy this file to TLS_PINS.plist and replace the placeholder with SHA-256 base64 pins for each host. A pin may be the EC P-256 SPKI hash (SHA-256 of the standard SPKI wrapper) or the SHA-256 of the full certificate DER. While TLS_PINS.plist is absent, standard App Store-grade trust applies (pinning is off). Source of truth: SecureHTTP.swift.</string>
+	<key>api.openai.com</key>
+	<array>
+		<string>PLACEHOLDER_SPKI_SHA256_BASE64</string>
+	</array>
+</dict>
+</plist>
