@@ -1,0 +1,370 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7E20A0000000000000000201 /* AgentChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000101 /* AgentChatView.swift */; };
+		7E20A0000000000000000202 /* AgentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000102 /* AgentConfig.swift */; };
+		7E20A0000000000000000203 /* AgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000103 /* AgentService.swift */; };
+		7E20A0000000000000000204 /* AgentSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000104 /* AgentSetupView.swift */; };
+		7E20A0000000000000000205 /* CloudUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000105 /* CloudUsage.swift */; };
+		7E20A0000000000000000206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000106 /* ContentView.swift */; };
+		7E20A0000000000000000207 /* DeviceHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000107 /* DeviceHubView.swift */; };
+		7E20A0000000000000000208 /* EyeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000108 /* EyeTheme.swift */; };
+		7E20A0000000000000000209 /* EyeVoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000109 /* EyeVoice.swift */; };
+		7E20A000000000000000020A /* Eye_HelpiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A000000000000000010A /* Eye_HelpiApp.swift */; };
+		7E20A000000000000000020B /* OpenAIFallbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A000000000000000010B /* OpenAIFallbackService.swift */; };
+		7E20A000000000000000020C /* SecureHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A000000000000000010C /* SecureHTTP.swift */; };
+		7E20A000000000000000020D /* VoiceCommandMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A000000000000000010D /* VoiceCommandMonitor.swift */; };
+		7E20A000000000000000020E /* ApiKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A000000000000000010E /* ApiKeyManager.swift */; };
+		7E20A000000000000000020F /* ENCRYPTED_KEYS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E20A000000000000000010F /* ENCRYPTED_KEYS.plist */; };
+		7E20A0000000000000000210 /* TLS_PINS.plist.example in Resources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000110 /* TLS_PINS.plist.example */; };
+		7E20A0000000000000000211 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000111 /* Assets.xcassets */; };
+		7E20A0000000000000000212 /* HomeKitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000112 /* HomeKitStatus.swift */; };
+		7E20A0000000000000000213 /* DocumentScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000113 /* DocumentScanner.swift */; };
+		7E20A0000000000000000214 /* PredictiveEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000114 /* PredictiveEngine.swift */; };
+		7E20A0000000000000000215 /* AskGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000115 /* AskGate.swift */; };
+		7E20A0000000000000000216 /* BeamHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000116 /* BeamHub.swift */; };
+		7E20A0000000000000000217 /* TagRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000117 /* TagRead.swift */; };
+		7E20A0000000000000000218 /* UplinkEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000118 /* UplinkEngine.swift */; };
+		7E20A0000000000000000219 /* TelemetryConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E20A0000000000000000119 /* TelemetryConsoleView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7E20A0000000000000000101 /* AgentChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentChatView.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000102 /* AgentConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentConfig.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000103 /* AgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentService.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000104 /* AgentSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentSetupView.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000105 /* CloudUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUsage.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000106 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000107 /* DeviceHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHubView.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000108 /* EyeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeTheme.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000109 /* EyeVoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeVoice.swift; sourceTree = "<group>"; };
+		7E20A000000000000000010A /* Eye_HelpiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eye_HelpiApp.swift; sourceTree = "<group>"; };
+		7E20A000000000000000010B /* OpenAIFallbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIFallbackService.swift; sourceTree = "<group>"; };
+		7E20A000000000000000010C /* SecureHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureHTTP.swift; sourceTree = "<group>"; };
+		7E20A000000000000000010D /* VoiceCommandMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCommandMonitor.swift; sourceTree = "<group>"; };
+		7E20A000000000000000010E /* ApiKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeyManager.swift; sourceTree = "<group>"; };
+		7E20A000000000000000010F /* ENCRYPTED_KEYS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ENCRYPTED_KEYS.plist; sourceTree = "<group>"; };
+		7E20A0000000000000000110 /* TLS_PINS.plist.example */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TLS_PINS.plist.example; sourceTree = "<group>"; };
+		7E20A0000000000000000111 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E20A0000000000000000112 /* HomeKitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeKitStatus.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000113 /* DocumentScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentScanner.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000114 /* PredictiveEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictiveEngine.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000115 /* AskGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskGate.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000116 /* BeamHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeamHub.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000117 /* TagRead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRead.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000118 /* UplinkEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UplinkEngine.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000119 /* TelemetryConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryConsoleView.swift; sourceTree = "<group>"; };
+		7E20A0000000000000000502 /* Eye_Helpi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Eye_Helpi.app; path = Eye_Helpi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3BF2D741262763E4F1A4005 /* Eye~Helpi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Eye~Helpi.entitlements"; path = "Eye~Helpi/Eye~Helpi.entitlements"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7E20A0000000000000000402 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7E20A0000000000000000300 = {
+			isa = PBXGroup;
+			children = (
+				7E20A0000000000000000301 /* Eye~Helpi */,
+				7E20A0000000000000000303 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7E20A0000000000000000301 /* Eye~Helpi */ = {
+			isa = PBXGroup;
+			children = (
+				7E20A0000000000000000101 /* AgentChatView.swift */,
+				7E20A0000000000000000102 /* AgentConfig.swift */,
+				7E20A0000000000000000103 /* AgentService.swift */,
+				7E20A0000000000000000104 /* AgentSetupView.swift */,
+				7E20A0000000000000000105 /* CloudUsage.swift */,
+				7E20A0000000000000000106 /* ContentView.swift */,
+				7E20A0000000000000000107 /* DeviceHubView.swift */,
+				7E20A0000000000000000108 /* EyeTheme.swift */,
+				7E20A0000000000000000109 /* EyeVoice.swift */,
+				7E20A000000000000000010A /* Eye_HelpiApp.swift */,
+				7E20A000000000000000010B /* OpenAIFallbackService.swift */,
+				7E20A000000000000000010C /* SecureHTTP.swift */,
+				7E20A000000000000000010D /* VoiceCommandMonitor.swift */,
+				7E20A0000000000000000302 /* Utils */,
+				7E20A000000000000000010F /* ENCRYPTED_KEYS.plist */,
+				7E20A0000000000000000110 /* TLS_PINS.plist.example */,
+				7E20A0000000000000000111 /* Assets.xcassets */,
+				7E20A0000000000000000112 /* HomeKitStatus.swift */,
+				7E20A0000000000000000113 /* DocumentScanner.swift */,
+				7E20A0000000000000000114 /* PredictiveEngine.swift */,
+				7E20A0000000000000000115 /* AskGate.swift */,
+				7E20A0000000000000000116 /* BeamHub.swift */,
+				7E20A0000000000000000117 /* TagRead.swift */,
+				7E20A0000000000000000118 /* UplinkEngine.swift */,
+				7E20A0000000000000000119 /* TelemetryConsoleView.swift */,
+				E3BF2D741262763E4F1A4005 /* Eye~Helpi.entitlements */,
+			);
+			path = "Eye~Helpi";
+			sourceTree = "<group>";
+		};
+		7E20A0000000000000000302 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7E20A000000000000000010E /* ApiKeyManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		7E20A0000000000000000303 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7E20A0000000000000000502 /* Eye_Helpi.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7E20A0000000000000000501 /* Eye~Helpi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E20A0000000000000000601 /* Build configuration list for PBXNativeTarget "Eye~Helpi" */;
+			buildPhases = (
+				7E20A0000000000000000901 /* Generate App Icon */,
+				7E20A0000000000000000401 /* Sources */,
+				7E20A0000000000000000402 /* Frameworks */,
+				7E20A0000000000000000403 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Eye~Helpi";
+			productName = "Eye~Helpi";
+			productReference = 7E20A0000000000000000502 /* Eye_Helpi.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7E20A0000000000000000800 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					7E20A0000000000000000501 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = 7E20A0000000000000000602 /* Build configuration list for PBXProject "Eye~Helpi" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7E20A0000000000000000300;
+			productRefGroup = 7E20A0000000000000000303 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7E20A0000000000000000501 /* Eye~Helpi */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7E20A0000000000000000403 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E20A000000000000000020F /* ENCRYPTED_KEYS.plist in Resources */,
+				7E20A0000000000000000210 /* TLS_PINS.plist.example in Resources */,
+				7E20A0000000000000000211 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7E20A0000000000000000901 /* Generate App Icon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/make-icon.swift",
+			);
+			name = "Generate App Icon";
+			outputPaths = (
+				"$(SRCROOT)/Eye~Helpi/Assets.xcassets/AppIcon.appiconset/icon1024.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "xcrun -sdk macosx swift \"${SRCROOT}/make-icon.swift\" 2>/dev/null || true\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7E20A0000000000000000401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E20A0000000000000000201 /* AgentChatView.swift in Sources */,
+				7E20A0000000000000000202 /* AgentConfig.swift in Sources */,
+				7E20A0000000000000000203 /* AgentService.swift in Sources */,
+				7E20A0000000000000000204 /* AgentSetupView.swift in Sources */,
+				7E20A0000000000000000205 /* CloudUsage.swift in Sources */,
+				7E20A0000000000000000206 /* ContentView.swift in Sources */,
+				7E20A0000000000000000207 /* DeviceHubView.swift in Sources */,
+				7E20A0000000000000000208 /* EyeTheme.swift in Sources */,
+				7E20A0000000000000000209 /* EyeVoice.swift in Sources */,
+				7E20A000000000000000020A /* Eye_HelpiApp.swift in Sources */,
+				7E20A000000000000000020B /* OpenAIFallbackService.swift in Sources */,
+				7E20A000000000000000020C /* SecureHTTP.swift in Sources */,
+				7E20A000000000000000020D /* VoiceCommandMonitor.swift in Sources */,
+				7E20A000000000000000020E /* ApiKeyManager.swift in Sources */,
+				7E20A0000000000000000212 /* HomeKitStatus.swift in Sources */,
+				7E20A0000000000000000213 /* DocumentScanner.swift in Sources */,
+				7E20A0000000000000000214 /* PredictiveEngine.swift in Sources */,
+				7E20A0000000000000000215 /* AskGate.swift in Sources */,
+				7E20A0000000000000000216 /* BeamHub.swift in Sources */,
+				7E20A0000000000000000217 /* TagRead.swift in Sources */,
+				7E20A0000000000000000218 /* UplinkEngine.swift in Sources */,
+				7E20A0000000000000000219 /* TelemetryConsoleView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7E20A0000000000000000701 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7E20A0000000000000000702 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7E20A0000000000000000703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Eye~Helpi/Eye~Helpi.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Eye~Helpi";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.organizationName.Eye-Helpi";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7E20A0000000000000000704 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Eye~Helpi/Eye~Helpi.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Eye~Helpi";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.organizationName.Eye-Helpi";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7E20A0000000000000000601 /* Build configuration list for PBXNativeTarget "Eye~Helpi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E20A0000000000000000703 /* Debug */,
+				7E20A0000000000000000704 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E20A0000000000000000602 /* Build configuration list for PBXProject "Eye~Helpi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E20A0000000000000000701 /* Debug */,
+				7E20A0000000000000000702 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7E20A0000000000000000800 /* Project object */;
+}
