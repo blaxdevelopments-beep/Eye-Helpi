@@ -1,0 +1,4 @@
+# full library  - no pip installs required.
+# Optional for full device control:
+#   ffmpeg    - background screen recordings (brew install ffmpeg)
+#   imagesnap - webcam frame capture (brew install imagesnap)
